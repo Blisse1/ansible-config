@@ -2,7 +2,7 @@
 
 ansible-playbook config.yml --ask-become-pass --verbose
 
-Important: make sure to logout once you've installed fish
+Important: make sure to logout once you've installed fish so the changes get applied
 
 ## How to install Ansible on Debian
 
