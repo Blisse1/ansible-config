@@ -1,0 +1,70 @@
+- hosts: localhost
+  become: true
+  pre_tasks: 
+  - name: Update cache
+    apt: 
+      update_cache: true
+    tags: 
+      - git
+      - vim
+      - curl
+      - fish
+      - rust
+      - alacritty
+  tasks: 
+  - name: Install git  
+    apt: name=git
+    tags:
+      - git
+  - name: Install vim  
+    apt: name=vim
+    tags:
+      - vim
+  - name: Install curl  
+    apt: name=curl
+    tags:
+      - curl
+  - name: Add PPA
+    shell: echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list
+    tags:
+      - fish
+  - name: Add keys
+    shell: curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null
+    tags:  
+      - fish
+  - name: Update system
+    shell: sudo apt update
+    tags:  
+      - fish
+  - name: Install fish
+    apt: name=fish
+    tags:  
+      - fish
+  - name: Make fish default shell
+    shell: chsh -s $(which fish)
+    tags:  
+      - fish
+  - name: Clone Alacritty
+    ansible.builtin.git:
+      repo: https://github.com/alacritty/alacritty.git
+      dest: /home/bliss/alacritty
+    tags:  
+      - alacritty
+  - name: Dependencies for Alacritty
+    apt:
+      pkg: 
+        - cmake
+        - pkg-config
+        - libfreetype6-dev
+        - libfontconfig1-dev
+        - libxcb-xfixes0-dev
+        - libxkbcommon-dev
+        - python3
+    tags:  
+      - alacritty
+    - name: Download and Install Rust
+     shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
+    tags:  
+      - rust
+    - name: Add cargo to path
+     shell: fish_add_path ~/.cargo/bin
