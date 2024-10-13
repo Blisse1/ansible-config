@@ -1,9 +1,9 @@
 - hosts: localhost
   become: true
   pre_tasks: 
-  - name: Update cache
-    apt: 
-      update_cache: true
+  - name: Update system
+      ansible.builtin.apt:
+        update_cache: yes
     tags: 
       - git
       - vim
@@ -13,15 +13,18 @@
       - alacritty
   tasks: 
   - name: Install git  
-    apt: name=git
+    ansible.builtin.apt:
+      name: git
     tags:
       - git
   - name: Install vim  
-    apt: name=vim
+    ansible.builtin.apt:
+      name: vim
     tags:
       - vim
   - name: Install curl  
-    apt: name=curl
+    ansible.builtin.apt:
+      name: curl
     tags:
       - curl
   - name: Add fish PPA
@@ -36,7 +39,8 @@
       ansible.builtin.apt:
         update_cache: yes
   - name: Install fish
-    apt: name=fish
+    ansible.builtin.apt:
+      name: fish
     tags:  
       - fish
   - name: Make fish default shell
@@ -50,7 +54,7 @@
     tags:  
       - alacritty
   - name: Dependencies for Alacritty
-    apt:
+    ansible.builtin.apt:
       pkg: 
         - cmake
         - pkg-config
@@ -61,9 +65,9 @@
         - python3
     tags:  
       - alacritty
-    - name: Download and Install Rust
-     shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
+  - name: Download and Install Rust
+    shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
     tags:  
       - rust
-    - name: Add cargo to path
-     shell: fish_add_path ~/.cargo/bin
+  - name: Add cargo to path
+    shell: fish_add_path ~/.cargo/bin
