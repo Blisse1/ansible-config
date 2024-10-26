@@ -74,3 +74,11 @@
       shell: 'curl https://sh.rustup.rs -sSf | sh -s -- -y'
       tags:
         - rust
+    - name: Add custom path to .bashrc
+      lineinfile:
+        path: ~/.bashrc
+        regexp: '^export PATH='
+        line: 'export PATH="$PATH:/root/.cargo/bin/rustup"'
+    - name: Notify user to reload .bashrc
+      debug:
+        msg: "Please run 'source ~/.bashrc' or restart your terminal to apply PATH changes."
