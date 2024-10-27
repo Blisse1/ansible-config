@@ -1,0 +1,8 @@
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Change the working directory to ~/alacritty and run the command as db_owner if /path/to/database does not exist
+      ansible.builtin.command: cargo build --release
+      become: yes
+      args:
+        chdir: /home/root/alacritty
